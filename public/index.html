@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Blessing Generator</title>
+</head>
+<body>
+  <div id="app">
+    <div id="inputForm">
+      <label for="event">Choose an event:</label>
+      <select id="event" name="event">
+        <option value="birthday">Birthday</option>
+        <!-- Add more event options as needed -->
+      </select>
+
+      <!-- Additional input fields based on user selection -->
+      <div id="additionalInputs"></div>
+
+      <button onclick="generateBlessing()">Generate Blessing</button>
+    </div>
+
+    <div id="result" style="display: none;">
+      <h2>Generated Blessing:</h2>
+      <ul id="blessingsList"></ul>
+      <button onclick="requestDifferentBlessing()">I want something different</button>
+    </div>
+  </div>
+
+  <script src="client.js"></script>
+</body>
+</html>
