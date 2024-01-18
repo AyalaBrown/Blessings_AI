@@ -9,6 +9,9 @@ const openai = new OpenAI({
 
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
@@ -16,19 +19,28 @@ app.get('/', (req, res) => {
   });
 
 app.post('/prompts', async(req, res) => {
-    const params = req.query;
-    age = ''
-    if (params.age !== '')
+    const params = req.body;
+    console.log("req",req)
+    if  (!params ||!params.type|| !params.event|| !params.atmosphere)
     {
-      const parse_int = parseInt(params.age);
-      if (isNaN(parse_int))
-      {
-        res.status(421).send("invalid age");
-      }
-      age += " for age" + params.age;
+        console.log("missing")
+        return res.status(500).send("missing parameters...");
+        console.log("missing atmosphere")
+    }
+    else{
+    age = ''
+    if (params.age !== undefined)
+    {
+        console.log("Age: " + params.age);
+        const parse_int = parseInt(params.age);
+        if (isNaN(parse_int))
+        {
+            return res.status(421).send("invalid age");
+        }
+        age += " for age" + params.age;
     }
     const prompt = `
-    I'm creating AI blessings, please give me 3 ${params.category} in ${params.atmosphere} atmosphere for ${params.event}${age} . 
+    I'm creating AI blessings, please give me 3 ${params.type} in ${params.atmosphere} atmosphere for ${params.event}${age} . 
     Also, return the response in a parsable JSON format like follow:
     {
       "1":"...",
@@ -56,7 +68,7 @@ app.post('/prompts', async(req, res) => {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
-
+    }
 });
 
 app.listen(process.env.PORT, (req, res) => {
