@@ -4,36 +4,136 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Blessings Generate</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fccfde; /* light blue */
+      text-align: center;
+      margin: 50px;
+    }
+
+    h1 {
+      color: #e62f90; /* darker blue */
+    }
+
+    label {
+      display: block;
+      margin: 10px 0;
+      font-size: 18px;
+      color: #f587b2;
+    }
+
+    select, input {
+      padding: 10px;
+      font-size: 16px;
+      width: 100px;
+      margin: 5px;
+      border: 1px solid #f2438f; /* light blue border */
+      border-radius: 5px;
+      box-sizing: border-box;
+      background-color: #f0d5de; 
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #8d4971; /* light green border on focus */
+    }
+
+    select option:checked {
+      background-color: #ed9bbd; /* light green background for selected option */
+      color: #ef0650; /* white text for selected option */
+    }
+
+    #ageInput {
+      display: none;
+    }
+
+    #choiceContainer {
+      height: '200px';
+    }
+
+    #buttonContainer {
+      margin-top: 20px;
+    }
+
+    #rel {
+      background-color: #f80964;
+      border: none;
+    }
+
+    #responseContainer {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #e7469f;
+      border: 1px solid #bd4f70;
+      border-radius: 5px;
+      text-align: left;
+    }
+
+    #submitButton {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #e332a8; /* light green */
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #anotherButton {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #e332a8; /* light green */
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #newSelection {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #e332a8; /* light green */
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #userSelections {
+      display: none;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
+
 <body>
-
 <div id="container">
-    <h1>AI Blessings Generate</h1>
-    <label for="event">Choose an event:</label>
-    <select id="event" name="event" onchange="handleEventChange()">
-        <option value="birthday">Birthday</option>
-        <option value="Wedding">Wedding</option>
-    </select><br/>
+  <h1>AI Blessings Generate</h1>
+  <div id="userSelections" ></div>
+  <button id="newSelection" onclick="newSelection();" style="display: none;">New Selections</button>
+  <label id="event_label" for="event" style="display: block;">Choose an event:</label>
+  <select id="event" name="event" onchange="handleEventChange()">
+      <option value="birthday">Birthday</option>
+      <option value="Wedding">Wedding</option>
+  </select><br/>
 
-    <div id="ageInput" style="display: none;">
-        <label  for="age">for age</label>
-        <input type="number" id="age" />
-    </div>
+  <div id="ageInput" style="display: none;">
+      <label id="forAge" for="age">for age</label>
+      <input type="number" id="age" />
+  </div>
 
-    <label for="atmosphere">Choose an atmosphere:</label>
-    <select id="atmosphere" name="atmosphere">
-        <option value="exciting">exciting</option>
-        <option value="funny">funny</option>
-    </select><br/>
+  <label id="atmosphere_label" for="atmosphere" style="display: block;">Choose an atmosphere:</label>
+  <select id="atmosphere" name="atmosphere">
+      <option value="exciting">exciting</option>
+      <option value="funny">funny</option>
+  </select><br/>
 
-    <label for="type">Type of blessing:</label>
-    <select id="type" name="type">
-        <option value="letter">letter</option>
-        <option value="song">song</option>
-    </select><br/>
+  <label id="type_label" for="type" style="display: block;">Type of blessing:</label>
+  <select id="type" name="type">
+      <option value="letter">letter</option>
+      <option value="song">song</option>
+  </select><br/>
 
-  <button onclick="sendData()">Generate Blessing</button>
+  <button id="submitButton" onclick="sendData()">Generate Blessing</button>
 
   <p id="result"></p>
 
