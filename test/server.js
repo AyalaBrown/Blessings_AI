@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const OpenAI = require('openai');
 
 const openai = new OpenAI({
-    apiKey: "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"
+    apiKey: "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"
   });
 
 const app = express();
@@ -16,14 +16,13 @@ app.post('/processData', async(req, res) => {
   const { event, atmosphere, type, age } = req.body;
 
   // Do something with the parameters (e.g., concatenate them)
-  const result = `Received: ${event}, ${atmosphere}, ${type}, ${age}`;
   if  (!type|| !event|| !atmosphere)
   {
       console.log("missing")
       res.status(500).send("missing parameters...");
   }
   age_ = ''
-  if (age !== undefined)
+  if (age !== undefined && age !== '')
   {
       console.log("Age: " + age);
       const parse_int = parseInt(age);

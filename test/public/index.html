@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple App</title>
+  <title>AI Blessings Generate</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <h1>Simple App</h1>
+<div id="container">
+    <h1>AI Blessings Generate</h1>
     <label for="event">Choose an event:</label>
     <select id="event" name="event" onchange="handleEventChange()">
         <option value="birthday">Birthday</option>
@@ -34,6 +36,10 @@
   <button onclick="sendData()">Generate Blessing</button>
 
   <p id="result"></p>
+
+  <button id="anotherButton" onclick="showNextResult()" style="display:none;">Another</button>
+
+</div>
 
   <script src="script.js"></script>
 </body>
