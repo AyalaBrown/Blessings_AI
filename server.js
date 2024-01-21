@@ -70,3 +70,5 @@ app.post('/processData', async(req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port} good luck:)`);
 });
+
+module.exports = app;
