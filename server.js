@@ -1,76 +1,72 @@
 const express = require('express');
-require('dotenv').config();
-const path = require('path');
+const bodyParser = require('body-parser');
 const OpenAI = require('openai');
 
+require('dotenv').config();
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
-
-const app = express();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    apiKey: process.env.OPENAI_API_KEY
   });
 
-app.post('/prompts', async(req, res) => {
-    const params = req.body;
-    console.log("req",req)
-    if  (!params ||!params.type|| !params.event|| !params.atmosphere)
-    {
-        console.log("missing")
-        return res.status(500).send("missing parameters...");
-        console.log("missing atmosphere")
-    }
-    else{
-    age = ''
-    if (params.age !== undefined)
-    {
-        console.log("Age: " + params.age);
-        const parse_int = parseInt(params.age);
-        if (isNaN(parse_int))
-        {
-            return res.status(421).send("invalid age");
-        }
-        age += " for age" + params.age;
-    }
-    const prompt = `
-    I'm creating AI blessings, please give me 3 ${params.type} in ${params.atmosphere} atmosphere for ${params.event}${age} . 
-    Also, return the response in a parsable JSON format like follow:
-    {
-      "1":"...",
-      "2":"...",
-      "3":"..."
-    }
-    `;
-    try{
-        const response = await openai.chat.completions.create({
-            messages: [{ role: 'user', content: prompt }],
-            model: 'gpt-3.5-turbo',
-            temperature: 0.8
-            });
+const app = express();
+const port = process.env.PORT || 3000;
 
-        const parsableJSONresponse = response.choices[0].message.content;
+app.use(bodyParser.json());
+app.use(express.static('public'));
 
-        let parsedResponse;
+app.post('/processData', async(req, res) => {
+  const { event, atmosphere, type, age } = req.body;
 
-        parsedResponse = await JSON.parse(parsableJSONresponse);
+  // Do something with the parameters (e.g., concatenate them)
+  if  (!type|| !event|| !atmosphere)
+  {
+      console.log("missing")
+      res.status(500).send("missing parameters...");
+  }
+  age_ = ''
+  if (age !== undefined && age !== '')
+  {
+      console.log("Age: " + age);
+      const parse_int = parseInt(age);
+      if (isNaN(parse_int))
+      {
+          res.status(421).send("invalid age");
+      }
+      age_ += " for age" + age;
+  }
+  const prompt = `
+  I'm creating AI blessings, please give me 3 ${type} in ${atmosphere} atmosphere for ${event}${age_} . 
+  Also, return the response in a parsable JSON format like follow:
+  {
+    "1":"...",
+    "2":"...",
+    "3":"..."
+  }
+  `;
+  try{
+      const response = await openai.chat.completions.create({
+          messages: [{ role: 'user', content: prompt }],
+          model: 'gpt-3.5-turbo',
+          temperature: 0.8
+          });
 
-        console.log(parsedResponse)
+      const parsableJSONresponse = response.choices[0].message.content;
 
-        res.send(parsedResponse);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-    }
-    }
+      let parsedResponse;
+
+      parsedResponse = await JSON.parse(parsableJSONresponse);
+
+      console.log(parsedResponse)
+
+      res.send(parsedResponse);
+    //   res.json({ message: result });
+  } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+  }
+  
 });
 
-app.listen(process.env.PORT, (req, res) => {
-  console.log(`listening on ${process.env.PORT}....`);
-})
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
