@@ -65,3 +65,5 @@ function showNextResult() {
     document.getElementById('result').style.display = 'none';
     document.getElementById('generateButton').disabled = false;
   }
+
+  
